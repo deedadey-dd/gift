@@ -563,12 +563,25 @@ def pay_for_item(item_id):
         amount = float(request.form['amount'])
         name = request.form['name']
         email = request.form['email']
+        phone = request.form['phone']
         message = request.form['message']
 
-        success, message = handle_contribution(item, amount, name, message)
-        if not success:
-            flash(message, 'danger')
-            return redirect(url_for('pay_for_item', item_id=item_id))
+        item.amount_paid += amount
+        if item.amount_paid >= item.item_price:
+            item.status = 'Filled'
+        else:
+            item.status = 'Partially Filled'
+
+        contribution = Contribution(
+            item_id=item.id,
+            name=name,
+            email=email,
+            phone=phone,
+            amount=amount,
+            message=message
+        )
+        db.session.add(contribution)
+        db.session.commit()
 
         flash('Thank you for your contribution!', 'success')
         return redirect(url_for('view_shared_wishlist', wishlist_id=item.wishlist_id))
