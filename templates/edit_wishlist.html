@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Wishlist</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Edit Wishlist</h2>
+        <form id="wishlistForm" method="POST" action="/edit_wishlist/{{ wishlist.wishlist_id }}">
+            <div class="form-group">
+                <label for="expiry_date">Expiry Date</label>
+                <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ wishlist.expiry_date }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Expiry Date</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

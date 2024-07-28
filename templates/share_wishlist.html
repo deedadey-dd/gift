@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Share Wishlist{% endblock %}
+
+{% block content %}
+<h2 class="mt-5">Share Wishlist</h2>
+<p>Copy the link below and share it with your family and friends:</p>
+<div class="input-group mb-3">
+    <input type="text" class="form-control" value="{{ shareable_link }}" id="shareableLink" readonly>
+    <div class="input-group-append">
+        <button class="btn btn-secondary" type="button" onclick="copyToClipboard('{{ shareable_link }}')">Copy Link</button>
+    </div>
+</div>
+<a href="{{ url_for('view_wishlist', wishlist_id=wishlist.wishlist_id) }}" class="btn btn-primary">Back to Wishlist</a>
+
+<script>
+function copyToClipboard(link) {
+    navigator.clipboard.writeText(link).then(function() {
+        alert('Wishlist link copied to clipboard!');
+    }, function(err) {
+        console.error('Error copying link: ', err);
+    });
+}
+</script>
+{% endblock %}

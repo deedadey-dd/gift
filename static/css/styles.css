@@ -1,0 +1,94 @@
+body.theme-light {
+    background-color: #ffffff;
+    color: #232424;
+}
+
+body.theme-dark {
+    background-color: #232424;
+    color: #ffffff;
+}
+
+body.theme-light .navbar {
+    background-color: #f8f9fa;
+    color: #232424;
+}
+
+body.theme-dark .navbar {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+body.theme-light .navbar .navbar-brand,
+body.theme-light .navbar .nav-link,
+body.theme-light .navbar .dropdown-toggle {
+    color: #232424;
+}
+
+body.theme-dark .navbar .navbar-brand,
+body.theme-dark .navbar .nav-link,
+body.theme-dark .navbar .dropdown-toggle {
+    color: #ffffff;
+}
+
+/* Added CSS for dropdown menus */
+body.theme-light .dropdown-menu {
+    background-color: #ffffff;
+    color: #232424;
+}
+
+body.theme-dark .dropdown-menu {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+body.theme-dark .dropdown-item {
+    color: #ffffff;
+}
+
+body.theme-dark .dropdown-item:hover,
+body.theme-dark .dropdown-item:focus {
+    background-color: #495057;
+    color: #ffffff;
+}
+
+body.theme-light .dropdown-item {
+    color: #232424;
+}
+
+body.theme-light .dropdown-item:hover,
+body.theme-light .dropdown-item:focus {
+    background-color: #e9ecef;
+    color: #232424;
+}
+
+/* Added CSS for cards */
+body.theme-light .card {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.theme-dark .card {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+body.theme-dark .card .card-title,
+body.theme-dark .card .card-text {
+    color: #ffffff;
+}
+
+body.theme-dark .title-highlight {
+    color: white;
+}
+
+body.theme-light .title-highlight {
+    color: #343a40;
+}
+
+.expired-label {
+    display: inline-block;
+    background-color: #f54c40;
+    padding: 5px 10px;
+    border-radius: 50px;
+    color: #fff;
+}

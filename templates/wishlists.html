@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}My Wishlists{% endblock %}
+
+{% block content %}
+<h2 class="mt-5">My Wishlists</h2>
+
+<div class="row">
+    {% for wishlist in wishlists %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title title-highlight">{{ wishlist.title }}</h5>
+                <p class="card-text">{{ wishlist.description }}</p>
+
+                <!-- Display the first 5 items and their prices -->
+                <ul style="padding-left:0; list-style: none;">
+                    {% for item in wishlist.items_summary %}
+                    <li class="d-flex justify-content-between" style="display: flex; justify-content: space-between;">
+                        <span>{{ item.item_name }}</span>
+                        <span>{{ "GH₵ {:,.2f}".format(item.item_price) }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <hr>
+                <!-- Display financial details -->
+                <div class="container">
+                    <p style="text-align: right;"><strong>Total Price:</strong> {{ "GH₵ {:,.2f}".format(wishlist.total_price) }}</p>
+                    <p style="text-align: right;"><strong>Total Contributed:</strong> {{ "GH₵ {:,.2f}".format(wishlist.total_contributed) }}</p>
+                    <p style="text-align: right;"><strong>Remaining Amount:</strong> {{ "GH₵ {:,.2f}".format(wishlist.remaining_amount) }}</p>
+
+                </div>
+
+                <a href="{{ url_for('view_wishlist', wishlist_id=wishlist.wishlist_id) }}" class="btn btn-primary mt-3">View Wishlist</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2 class="mt-5">Store Items</h2>
+
+<div class="row">
+    {% for item in items %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ url_for('static', filename=item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="card-text"><strong>Price:</strong> {{ "GH₵ {:,.2f}".format(item.price) }}</p>
+                {% if current_user.is_authenticated %}
+                <!-- Dropdown to select a wishlist -->
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton{{ item.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Add to Wishlist
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ item.id }}">
+                        {% for wishlist in wishlists %}
+                        <a class="dropdown-item" href="{{ url_for('add_store_item_to_wishlist', wishlist_id=wishlist.wishlist_id, item_id=item.id) }}">{{ wishlist.title }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                <button class="btn btn-primary" data-toggle="modal" data-target="#giftModal" data-item-id="{{ item.id }}">Gift Item</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Gift Modal -->
+<div class="modal fade" id="giftModal" tabindex="-1" role="dialog" aria-labelledby="giftModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="giftModalLabel">Gift Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{{ url_for('search_recipient_wishlists') }}">
+        <div class="modal-body">
+          <input type="hidden" id="gift_item_id" name="gift_item_id">
+          <div class="form-group">
+            <label for="recipient_username">Recipient Username</label>
+            <input type="text" class="form-control" id="recipient_username" name="recipient_username" required>
+          </div>
+          <div class="form-group">
+            <label for="recipient_phone">Recipient Phone</label>
+            <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Search Wishlists</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    $('#giftModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var itemId = button.data('item-id');
+        var modal = $(this);
+        modal.find('.modal-body #gift_item_id').val(itemId);
+    });
+});
+</script>
+{% endblock %}

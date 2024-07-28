@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Wishlist Items{% endblock %}
+
+{% block content %}
+<h2 class="mt-5">{{ wishlist.title }}</h2>
+<p>{{ wishlist.description }}</p>
+
+<div class="row">
+    {% for item in wishlist_items %}
+    <div class="col-md-4 mb-4">
+        <div class="card {% if item.status == 'Filled' %}bg-secondary text-white{% endif %}">
+            <img src="{{ item.item_image_url }}" class="card-img-top" alt="{{ item.item_name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.item_name }}</h5>
+                <p class="card-text">{{ item.item_description }}</p>
+                <p class="card-text"><strong>Price:</strong> ${{ item.item_price }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ item.status }}</p>
+                {% if item.status != 'Filled' %}
+                <a href="{{ url_for('pay_for_item', item_id=item.id) }}" class="btn btn-primary">Contribute</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

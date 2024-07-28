@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Recipient Wishlists{% endblock %}
+
+{% block content %}
+<h2 class="mt-5">Select Wishlist for: {{ item.name }}</h2>
+
+<div class="row">
+    {% for wishlist in wishlists %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ wishlist.title }}</h5>
+                <p class="card-text">{{ wishlist.description }}</p>
+                <a href="{{ url_for('gift_item', wishlist_id=wishlist.wishlist_id, item_id=item.id) }}" class="btn btn-primary">Add to Wishlist</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
