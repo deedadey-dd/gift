@@ -15,7 +15,7 @@
                 <i class="card-text">Created by: <b>{{ wishlist.user.name }}</b></i>
                 <div>
                     {% if wishlist.user.profile_picture %}
-                        <img src="{{ url_for('static', filename='uploads/' ~ wishlist.user.profile_picture) }}" alt="Profile Picture" class="rounded-square" width="50" height="50">
+                        <img src="{{ url_for('static', filename=wishlist.user.profile_picture) }}" alt="Profile Picture" class="rounded-square" width="50" height="50">
                     {% endif %}
                 </div>
 

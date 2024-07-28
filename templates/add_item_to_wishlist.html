@@ -5,53 +5,60 @@
 {% block content %}
 <h2 class="mt-5">Add Item to Wishlist: {{ wishlist.title }}</h2>
 
-<form method="GET" action="">
-    <div class="form-group">
-        <label for="search">Search for Store Items</label>
-        <input type="text" class="form-control" id="search" name="search" placeholder="Enter item name to search">
-    </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
-
-<h3 class="mt-5">Store Items</h3>
 <div class="row">
-    {% for item in items %}
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="{{ url_for('static', filename=item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-                <h5 class="card-title">{{ item.name }}</h5>
-                <p class="card-text">{{ item.description }}</p>
-                <p class="card-text"><strong>Price:</strong> {{ "GH₵ {:,.2f}".format(item.price) }}</p>
-                <form method="POST" action="{{ url_for('add_item_to_wishlist', wishlist_id=wishlist.wishlist_id) }}">
-                    <input type="hidden" name="item_id" value="{{ item.id }}">
-                    <button type="submit" class="btn btn-primary">Add to Wishlist</button>
-                </form>
+    <!-- Store Items Section -->
+    <div class="col-md-8">
+        <form method="GET" action="">
+            <div class="form-group">
+                <label for="search">Search for Store Items</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Enter item name to search">
             </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <h3 class="mt-5">Store Items</h3>
+        <div class="row">
+            {% for item in items %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename=item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text">{{ item.description }}</p>
+                        <p class="card-text"><strong>Price:</strong> {{ "GH₵ {:,.2f}".format(item.price) }}</p>
+                        <form method="POST" action="{{ url_for('add_item_to_wishlist', wishlist_id=wishlist.wishlist_id) }}">
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
+
+    <!-- Custom Item Form Section -->
+    <div class="col-md-4">
+        <h3 class="mt-5">Add Custom Item</h3>
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('add_item_to_wishlist', wishlist_id=wishlist.wishlist_id) }}">
+            <div class="form-group">
+                <label for="custom_name">Item Name</label>
+                <input type="text" class="form-control" id="custom_name" name="custom_name" required>
+            </div>
+            <div class="form-group">
+                <label for="custom_description">Item Description</label>
+                <textarea class="form-control" id="custom_description" name="custom_description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="custom_price">Item Price</label>
+                <input type="number" class="form-control" id="custom_price" name="custom_price" required>
+            </div>
+            <div class="form-group">
+                <label for="custom_image">Item Image</label>
+                <input type="file" class="form-control-file" id="custom_image" name="custom_image">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Custom Item</button>
+        </form>
+    </div>
 </div>
-
-<h3 class="mt-5">Add Custom Item</h3>
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('add_item_to_wishlist', wishlist_id=wishlist.wishlist_id) }}">
-    <div class="form-group">
-        <label for="custom_name">Item Name</label>
-        <input type="text" class="form-control" id="custom_name" name="custom_name" required>
-    </div>
-    <div class="form-group">
-        <label for="custom_description">Item Description</label>
-        <textarea class="form-control" id="custom_description" name="custom_description" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="custom_price">Item Price</label>
-        <input type="number" class="form-control" id="custom_price" name="custom_price" required>
-    </div>
-    <div class="form-group">
-        <label for="custom_image">Item Image</label>
-        <input type="file" class="form-control-file" id="custom_image" name="custom_image">
-    </div>
-    <button type="submit" class="btn btn-primary">Add Custom Item</button>
-</form>
 {% endblock %}
-

@@ -31,7 +31,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {% if current_user.profile_picture %}
-                                <img src="{{ url_for('static', filename='uploads/' ~ current_user.profile_picture) }}" alt="Profile Picture" class="rounded-circle" width="30" height="30">
+                                <img src="{{ url_for('static', filename=current_user.profile_picture) }}" alt="Profile Picture" class="rounded-circle" width="30" height="30">
                             {% else %}
                                 Profile
                             {% endif %}
