@@ -43,16 +43,21 @@
         <div class="card {% if item.status == 'Filled' %}bg-secondary text-white{% endif %}">
             <img src="{{ url_for('static', filename=item.item_image_url) }}" class="card-img-top img-thumbnail" alt="{{ item.item_name }}" style="height: 150px; object-fit: cover;">
             <div class="card-body">
-                <h5 class="card-title" style="display: inline-block">
+                <h5 class="card-title" >
                     {{ item.item_name }}
-                    {% if item.status == 'Filled' %}
-                    <img src="/static/images/greencheck.svg" style="margin-left: 20px; width: 40px; height: 40px;" alt="checked">
-                    COMPLETED
-                    {% endif %}
                 </h5>
+                    {% if item.status == 'Filled' %}
+                <h5 style="display: inline-block">
+                    COMPLETED
+                    <img src="/static/images/greencheck.svg" style="margin-left: 20px; width: 30px; height: 30px;" alt="checked">
+                </h5>
+
+                    {% endif %}
+
                 <p class="card-text">{{ item.item_description }}</p>
                 {% if item.status == 'Partially Filled' %}
-                    <p class="card-text"><strong>Price:</strong> <del>{{ "GH₵ {:,.2f}".format(item.item_price) }}</del> {{ "GH₵ {:,.2f}".format(item.item_price - item.amount_paid) }}<br/>Completed</p>
+                    <p class="card-text"><strong>Initial Price:</strong> <del>{{ "GH₵ {:,.2f}".format(item.item_price) }}</del>
+                        <br><strong>Remaining: </strong>{{ "GH₵ {:,.2f}".format(item.item_price - item.amount_paid) }}</p>
                 {% else %}
                     <p class="card-text"><strong>Price:</strong> {{ "GH₵ {:,.2f}".format(item.item_price) }}</p>
                 {% endif %}

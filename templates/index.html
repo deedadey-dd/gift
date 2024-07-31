@@ -6,9 +6,9 @@
 <h2 class="mt-5">Store Items</h2>
 
 <div class="row">
-    {% for item in items %}
+    {% for item, color in items_with_colors %}
     <div class="col-md-4 mb-4">
-        <div class="card">
+        <div class="card" style="background-color: #{{ color }};">
             <img src="{{ url_for('static', filename=item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;">
             <div class="card-body">
                 <h5 class="card-title">{{ item.name }}</h5>

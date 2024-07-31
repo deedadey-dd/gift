@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, render_template, request, redirect, url_for, flash, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +12,6 @@ from itsdangerous import URLSafeTimedSerializer
 from PIL import Image
 from app import app, db
 from flask_migrate import Migrate
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gifting_platform.db'
@@ -159,13 +160,34 @@ def handle_contribution(item, amount, name, email, phone, message):
     return True, "Contribution successful!"
 
 
+all_colors = ['009FBD', '3FA2F6', 'FF4191', '36BA98', '597445', 'E0A75E', 'FF6969', '06D001',
+              '83B4FF', 'C738BD', 'A1DD70', 'D2649A', '40A578', 'FF76CE', 'AF8260', '41B06E', '5755FE', ]
+
+
+def card_color():
+    return random.choice(all_colors)
+
+
+# @app.route('/')
+# def home():
+#     items = Item.query.order_by(Item.added_to_wishlist_count.desc()).all()
+#     wishlists = []
+#     if current_user.is_authenticated:
+#         wishlists = Wishlist.query.filter_by(user_id=current_user.user_id).all()
+#     return render_template('index.html', items=items, wishlists=wishlists, card_color=card_color())
+
+
 @app.route('/')
 def home():
     items = Item.query.order_by(Item.added_to_wishlist_count.desc()).all()
     wishlists = []
     if current_user.is_authenticated:
         wishlists = Wishlist.query.filter_by(user_id=current_user.user_id).all()
-    return render_template('index.html', items=items, wishlists=wishlists)
+
+    # Assign a random color to each item
+    items_with_colors = [(item, card_color()) for item in items]
+
+    return render_template('index.html', items_with_colors=items_with_colors, wishlists=wishlists)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -209,7 +231,6 @@ def register():
         flash('User registered successfully!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -342,7 +363,10 @@ def wishlists():
         wishlist.total_contributed = sum(item.amount_paid for item in items)
         wishlist.remaining_amount = wishlist.total_price - wishlist.total_contributed
 
-    return render_template('wishlists.html', wishlists=user_wishlists)
+    # Assign a random color to each wishlist
+    wishlists_with_colors = [(wishlist, card_color()) for wishlist in user_wishlists]
+
+    return render_template('wishlists.html', wishlists_with_colors=wishlists_with_colors)
 
 
 @app.route('/wishlist/<int:wishlist_id>/update_expiry_date', methods=['POST'])
@@ -603,7 +627,10 @@ def all_wishlists():
         wishlist.total_contributed = sum(item.amount_paid for item in items)
         wishlist.remaining_amount = wishlist.total_cost - wishlist.total_contributed
 
-    return render_template('all_wishlists.html', wishlists=wishlists)
+    # Assign a random color to each wishlist
+    wishlists_with_colors = [(wishlist, card_color()) for wishlist in wishlists.items]
+
+    return render_template('all_wishlists.html', wishlists=wishlists_with_colors, pagination=wishlists)
 
 
 @app.route('/wishlist/share/<int:wishlist_id>')
@@ -793,7 +820,8 @@ def gift_item(wishlist_id, item_id):
         db.session.flush()  # Ensure the wishlist_item is added and item_id is set
 
         # Pass the newly added wishlist item as a parameter into handle_contribution
-        success, message = handle_contribution(wishlist_item, contribution_amount, giver_name, giver_email, giver_phone, message)
+        success, message = handle_contribution(wishlist_item, contribution_amount, giver_name, giver_email, giver_phone,
+                                               message)
         if not success:
             flash(message, 'danger')
             return redirect(url_for('gift_item', wishlist_id=wishlist_id, item_id=item_id))
@@ -841,4 +869,3 @@ if __name__ == '__main__':
         db.create_all()
 
     app.run(debug=True)
-
