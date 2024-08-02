@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Register Vendor{% endblock %}
+
+{% block content %}
+<h2>Register Vendor</h2>
+<form method="POST" action="{{ url_for('vendor.register_vendor') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.name.label }} {{ form.name(class_='form-control') }}
+    </div>
+    <div class="form-group">
+        {{ form.email.label }} {{ form.email(class_='form-control') }}
+    </div>
+    <div class="form-group">
+        {{ form.phone.label }} {{ form.phone(class_='form-control') }}
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+{% endblock %}
